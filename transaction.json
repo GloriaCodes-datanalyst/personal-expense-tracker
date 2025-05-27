@@ -1,0 +1,58 @@
+[
+    {
+        "amount": 10000.0,
+        "description": "Rent",
+        "date": "2025-06-05",
+        "category": "Bill",
+        "transaction_type": "expense"
+    },
+    {
+        "amount": 500.0,
+        "description": "Internent",
+        "date": "2025-06-05",
+        "category": "Bill",
+        "transaction_type": "expense"
+    },
+    {
+        "amount": 100000.0,
+        "description": "Salary",
+        "date": "2025-06-04",
+        "category": "Income",
+        "transaction_type": "income"
+    },
+    {
+        "amount": 2000.0,
+        "description": "Shoes",
+        "date": "2025-06-14",
+        "category": "Clothing and Shoes",
+        "transaction_type": "expense"
+    },
+    {
+        "amount": 5040.0,
+        "description": "Books",
+        "date": "2025-06-05",
+        "category": "Books",
+        "transaction_type": "expense"
+    },
+    {
+        "amount": 400.0,
+        "description": "Groceries",
+        "date": "2025-06-17",
+        "category": "Food",
+        "transaction_type": "expense"
+    },
+    {
+        "amount": 500.0,
+        "description": "Uber",
+        "date": "2025-06-16",
+        "category": "Transport",
+        "transaction_type": "expense"
+    },
+    {
+        "amount": 6500.0,
+        "description": "House shopping",
+        "date": "2025-06-09",
+        "category": "House Shopping",
+        "transaction_type": "expense"
+    }
+]
