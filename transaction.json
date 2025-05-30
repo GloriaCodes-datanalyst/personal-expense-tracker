@@ -42,17 +42,59 @@
         "transaction_type": "expense"
     },
     {
-        "amount": 500.0,
-        "description": "Uber",
-        "date": "2025-06-16",
-        "category": "Transport",
-        "transaction_type": "expense"
-    },
-    {
         "amount": 6500.0,
         "description": "House shopping",
         "date": "2025-06-09",
         "category": "House Shopping",
         "transaction_type": "expense"
+    },
+    {
+        "amount": 5000.0,
+        "description": "entertainment",
+        "date": "2025-06-15",
+        "category": "fun  activities",
+        "transaction_type": "expense"
+    },
+    {
+        "amount": 77.0,
+        "description": "Water",
+        "date": "2025-06-15",
+        "category": "Food",
+        "transaction_type": "expense"
+    },
+    {
+        "amount": 590.0,
+        "description": "Uber",
+        "date": "2025-06-02",
+        "category": "Transport",
+        "transaction_type": "expense"
+    },
+    {
+        "amount": 780.0,
+        "description": "Uber",
+        "date": "2025-06-24",
+        "category": "Transport",
+        "transaction_type": "expense"
+    },
+    {
+        "amount": 5848.0,
+        "description": "Groceries",
+        "date": "2025-07-03",
+        "category": "Food",
+        "transaction_type": "expense"
+    },
+    {
+        "amount": 548.0,
+        "description": "Groceries",
+        "date": "2025-01-16",
+        "category": "Food",
+        "transaction_type": "expense"
+    },
+    {
+        "amount": 100000.0,
+        "description": "Income",
+        "date": "2025-01-01",
+        "category": "Income",
+        "transaction_type": "income"
     }
 ]
