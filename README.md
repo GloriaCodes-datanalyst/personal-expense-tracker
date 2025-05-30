@@ -18,7 +18,10 @@ This demonstrates core programming concepts including functions, file handling, 
 - View total balance
 - View and analyze spending by category
 - Monthly spending summary
-- Auto-save data in JSON 
+- Auto-save data in JSON
+
+## Inspiration
+Built as part of my journey learning Python and applying it to real-world problems like budgeting and money tracking.
 
 ## Setup
 1. Download this repository to your machine.
