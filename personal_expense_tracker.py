@@ -9,8 +9,8 @@ from unittest import expectedFailure
 class Transaction:
     def __init__(self, amount, description, category, date, transaction_type):
         self.amount = float(amount)         # The amount spent/earned (positive for income, negative for expense)
-        self.description = description  # A description of the transaction (e.g., "Groceries")
-        self.category = category       # Category of the transaction (e.g., "Food")
+        self.description = description      # A description of the transaction (e.g., "Groceries")
+        self.category = category            # Category of the transaction (e.g., "Food")
 
         if isinstance(date, str):
             try:
@@ -30,20 +30,35 @@ class BudgetManager:
         self.load_transactions()       # Try to load existing transactions
 
     def add_transaction(self, amount, description, category, date, transaction_type):
-        # Create a new Transaction object and add it to the list
+
+        # Create a new Transaction object and adds it to the list
         new_transaction = Transaction(amount, description, category, date, transaction_type)
         self.transactions.append(new_transaction)           # Adds a new transaction to the transactions list
-        self.save_transactions()  # Save the updated transactions list to file
+        self.save_transactions()                     # Saves the updated transactions list to file
 
-    def remove_transaction(self):
-        desc = input("Enter the description of the transaction to be removed: ").strip().lower()
+    def remove_transaction(self, desc, date=None, amount=None):
+        desc = desc.strip().lower()
+
+        if date and isinstance(date, str):
+            try:
+                date = datetime.strptime(date, "%Y-%m-%d").date()
+            except ValueError:
+                print("Invalid date format for removal filter.")
+                date = None
 
         for i, t in enumerate(self.transactions):
+            t_date = t.date
+
+            # if t.date is datetime, this will convert to date for comparison
+            if isinstance(t_date, datetime):
+                t_date = t_date.date()
+
             if t.description.strip().lower() == desc:
-                print(f"Removed: {t.date}: {t.description} | {t.amount} ")
-                del self.transactions[i]
-                self.save_transactions()
-                return
+                if (date is None or t.date == date) and (amount is None or t.amount == amount):
+                    print(f"Removed: {t.date.strftime('%Y-%m-%d')}: {t.description} | {t.amount}")
+                    del self.transactions[i]
+                    self.save_transactions()
+                    return
 
         print("Transaction with that description not found")
 
@@ -82,14 +97,14 @@ class BudgetManager:
         summary = {}   # Holds the totals by category
 
         for t in self.transactions:
-            category = t.category.strip().lower()   # Make lowercases
+            category = t.category.strip().lower()   # Makes it in lowercases
             summary[category] = summary.get(category, 0) + t.amount
 
 
            # Printing the summary
-            print("\n📊 Spending Summary by Category")
-            for category, total in summary.items():
-                print(f"{category.title()}: {total:.2f}")
+        print("\n📊 Spending Summary by Category")
+        for category, total in summary.items():
+            print(f"{category.title()}: {total:.2f}")
 
     def summarize_by_month(self):
         summary = {}
@@ -106,7 +121,7 @@ class BudgetManager:
                     summary[month]["expense"] += t.amount
 
             except AttributeError:   # If a transaction has an invalid date format, we skip it and print a warning.
-                print(f"⚠️ Skipping transaction with invalid date: {t.date}")
+                print(f"Skipping transaction with invalid date: {t.date}")
 
         # Summary print
         print("\n📆 Summary by Month:")
@@ -114,7 +129,8 @@ class BudgetManager:
             print(f"{month} - Income: {total['income']:.2f} | Expense: {total['expense']:.2f}")
 
     def load_transactions(self):
-        # Try to load transactions from the file
+
+        # This will try to load transactions from the file
         try:
             with open(self.filename, "r") as f:
                 data = json.load(f)
@@ -131,7 +147,8 @@ class BudgetManager:
                     )
                     self.transactions.append(transaction)
         except (FileNotFoundError, json.JSONDecodeError):
-            # If file does not exist or it's empty/corrupted, simply start with an empty list
+
+            # If file does not exist/it's empty/corrupted, it will simply start with an empty list
             pass
 
 # --- Menu and Main Logic ---
@@ -157,7 +174,7 @@ def main():
         if choice == "1":  # Add Transaction
             # Get amount with error handling
             try:
-                amount = float(input("Enter amount: "))      # Get's the amount and converts the number into a float
+                amount = float(input("Enter amount: "))      # Gets the amount and converts the number into a float
             except ValueError:          # If a user types a letter instead of a number they see an error and go back to the menu
                 print("Please enter a valid number for the amount.")
                 continue
@@ -174,7 +191,7 @@ def main():
                 print("❌ Invalid date format. Please use YYYY-MM-DD.")
                 continue
 
-            # Transaction Type (this must be at the same level as the try block)
+            # Transaction Type
             transaction_type = input("Is this an income or expense: ").strip().lower()
             if transaction_type not in ["income", "expense"]:
                 print("Invalid transaction type. Enter 'income' or 'expense'.")
@@ -188,18 +205,41 @@ def main():
             manager.view_transactions()
 
         elif choice == "3":
-            manager.remove_transaction()
+            desc = input("Enter the transaction description to be removed.").strip()
+
+            date_input = input(
+                "Enter the date of the transaction to remove (YYYY-MM-DD) or press Enter to skip: ").strip()
+            if date_input == "":
+                date = None
+            else:
+                try:
+                    date = datetime.strptime(date_input, "%Y-%m-%d").date()
+                except ValueError:
+                    print("Invalid date format. Skipping date filter.")
+                    date = None
+
+            amount_input = input("Enter the amount of the transaction to remove or press Enter to skip: ").strip()
+            if amount_input == "":
+                amount = None
+            else:
+                try:
+                    amount = float(amount_input)
+                except ValueError:
+                    print("Invalid amount format. Skipping amount filter.")
+                    amount = None
+
+            manager.remove_transaction(desc, date, amount)
 
         elif choice == "4":
-            # Display the current balance
+            # Displays the current balance
             print(f"Total Balance: {manager.get_balance():.2f}")
 
         elif choice == "5":
-            # Show spending summary by category
+            # Shows spending summary by category
             manager.summarize_by_category()
 
         elif choice == "6":
-           # Show summary by month
+           # Shows summary by month
             manager.summarize_by_month()
 
         elif choice == "7":
@@ -212,5 +252,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
